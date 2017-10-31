@@ -1,22 +1,53 @@
 import { Template } from 'meteor/templating';
-import { ReactiveVar } from 'meteor/reactive-var';
-
+import { Notes } from '../lib/collections.js';
+import { Accounts } from 'meteor/accounts-base';
 import './main.html';
 
-Template.hello.onCreated(function helloOnCreated() {
-  // counter starts at 0
-  this.counter = new ReactiveVar(0);
+// Accounts config
+Accounts.ui.config({
+  passwordSignupFields: 'USERNAME_ONLY',
 });
 
-Template.hello.helpers({
-  counter() {
-    return Template.instance().counter.get();
+Template.body.helpers({
+  notes() {
+    /*
+     const notes = [
+      { text: 'note1' },
+      { text: 'note2' },
+    ];
+    return notes;
+    */
+    // 선택검색 가능
+    // return Notes.find({ owner: Meteor.userId() });
+    return Notes.find({});
   },
 });
 
-Template.hello.events({
-  'click button'(event, instance) {
-    // increment the counter when button is clicked
-    instance.counter.set(instance.counter.get() + 1);
+Template.add.events({
+  'submit .add-form': function () {
+    event.preventDefault();
+    // console.log('preventDefault');
+
+    const target = event.target;
+    const text = target.text.value;
+    // console.log(text);
+    Notes.insert({
+      text,
+      createdAt: new Date(),
+      owner: Meteor.userId(),
+      username: Meteor.user().username,
+    });
+
+    target.text.value = '';
+
+    $('#addModal').modal('close');
   },
 });
+
+Template.note.events({
+  'click .delete-note': function () {
+    Notes.remove(this._id);
+    return false;
+  },
+});
+
