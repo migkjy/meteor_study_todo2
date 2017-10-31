@@ -1,20 +1,15 @@
 module.exports = {
-    "extends": "airbnb-base",
-    "plugins": [
-        "react",
-        "jsx-a11y",
-        "import",
-        'meteor',
+    "extends": [
+        "airbnb", 
+        "eslint:recommended", 
+        "plugin:meteor/recommended"
     ],
+    "plugins": ["meteor"],
     rules:{
-        "linebreak-style": [2, "windows"],
+        "linebreak-style": [0],
         "no-console": 0,
     },
     env: {
-        "browser": true,
-        "commonjs": true,
-        "es6": true,
         "jquery": true,
-        'meteor': true,        
-      },
+    },
 };
