@@ -7,7 +7,7 @@ module.exports = {
         'meteor',
     ],
     rules:{
-        "linebreak-style": ["error", "windows"],
+        "linebreak-style": [2, "windows"],
         "no-console": 0,
     },
     env: {
